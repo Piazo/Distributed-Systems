@@ -1,0 +1,63 @@
+/* Probleme du choix distant en asynchrone avec controle de flux */ 
+
+
+chan LRGET, LRPUT;
+int  LRVG,  LRVP;
+
+chan RLGET, RLPUT;
+int  RLVG,  RLVP;
+
+process site(chan &in, chan &out, int &vin, int &vout) {
+
+int mesg;
+state
+    idle,
+    apres_envoi,
+    apres_recoit;
+urgent
+    idle,
+    apres_envoi,
+    apres_recoit;
+init
+    idle;
+trans
+    idle -> apres_envoi { sync out!; assign vout := 5; },
+    idle -> apres_recoit { sync in?; assign mesg := vin; },
+    apres_envoi -> idle { },
+    apres_recoit -> idle { };
+}
+
+process fifo(const int cap, chan &get, chan &put,  int &vget,  int &vput) {
+
+        int cpt := 0;
+        int buf[cap];
+        int ixP := 0;
+        int ixG := 0;
+state
+    service,
+    erreur;
+urgent
+    service,
+    erreur;
+init
+    service;
+trans
+    service -> service { guard cpt > 0; sync get!; assign vget:= buf[ixG], 
+                cpt:= cpt - 1, ixG:= (ixG == (cap - 1))?0:(ixG + 1); },
+    service -> service { guard cpt < cap; sync put?; assign buf[ixP]:= vput, cpt:= cpt + 1, 
+                ixP:= (ixP == (cap - 1))?0:(ixP + 1); };
+}
+
+
+
+
+
+FifoLR  := fifo(4,LRGET,LRPUT,LRVG,LRVP);
+FifoRL  := fifo(4,RLGET,RLPUT,RLVG,RLVP);
+
+gauche := site(RLGET,LRPUT,RLVG,LRVP);
+droit :=  site(LRGET,RLPUT,LRVG,RLVP);
+
+
+
+system gauche, FifoLR, FifoRL, droit;

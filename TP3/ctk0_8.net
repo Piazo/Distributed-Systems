@@ -1,0 +1,66 @@
+net {tokenring 8}
+pl token_1(1)
+pl idle_1(1)
+pl idle_2(1)
+pl idle_3(1)
+pl idle_4(1)
+pl idle_5(1)
+pl idle_6(1)
+pl idle_7(1)
+pl idle_8(1)
+tr 1_ask idle_1 -> wait_1
+tr 1_work wait_1 -> cs_1
+tr 1_rel cs_1 -> idle_1
+tr 1_work  token_1 -> 
+tr 1_rel  -> token_1
+tr 1_exit  token_1 ->  after_1
+tr 2_ask idle_2 -> wait_2
+tr 2_work wait_2 -> cs_2
+tr 2_rel cs_2 -> idle_2
+tr 2_work  token_2 -> 
+tr 2_rel  -> token_2
+tr 2_exit  token_2 ->  after_2
+tr 3_ask idle_3 -> wait_3
+tr 3_work wait_3 -> cs_3
+tr 3_rel cs_3 -> idle_3
+tr 3_work  token_3 -> 
+tr 3_rel  -> token_3
+tr 3_exit  token_3 ->  after_3
+tr 4_ask idle_4 -> wait_4
+tr 4_work wait_4 -> cs_4
+tr 4_rel cs_4 -> idle_4
+tr 4_work  token_4 -> 
+tr 4_rel  -> token_4
+tr 4_exit  token_4 ->  after_4
+tr 5_ask idle_5 -> wait_5
+tr 5_work wait_5 -> cs_5
+tr 5_rel cs_5 -> idle_5
+tr 5_work  token_5 -> 
+tr 5_rel  -> token_5
+tr 5_exit  token_5 ->  after_5
+tr 6_ask idle_6 -> wait_6
+tr 6_work wait_6 -> cs_6
+tr 6_rel cs_6 -> idle_6
+tr 6_work  token_6 -> 
+tr 6_rel  -> token_6
+tr 6_exit  token_6 ->  after_6
+tr 7_ask idle_7 -> wait_7
+tr 7_work wait_7 -> cs_7
+tr 7_rel cs_7 -> idle_7
+tr 7_work  token_7 -> 
+tr 7_rel  -> token_7
+tr 7_exit  token_7 ->  after_7
+tr 8_ask idle_8 -> wait_8
+tr 8_work wait_8 -> cs_8
+tr 8_rel cs_8 -> idle_8
+tr 8_work  token_8 -> 
+tr 8_rel  -> token_8
+tr 8_exit  token_8 ->  after_8
+tr 2_entry after_1 -> token_2
+tr 3_entry after_2 -> token_3
+tr 4_entry after_3 -> token_4
+tr 5_entry after_4 -> token_5
+tr 6_entry after_5 -> token_6
+tr 7_entry after_6 -> token_7
+tr 8_entry after_7 -> token_8
+tr 1_entry after_8 -> token_1

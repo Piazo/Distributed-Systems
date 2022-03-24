@@ -1,0 +1,61 @@
+process Left graphinfo {
+location idle (-416,-102);
+locationName idle(-10,-30);
+location choice (-416,144);
+locationName choice(-10,-30);
+location before_a (-289,25);
+locationName before_a(-10,-30);
+location before_b (-543,17);
+locationName before_b(-10,-30);
+sync idle choice 1 (8,-4);
+assign idle choice 1 (0,0);
+assign choice before_a 1 (21,1);
+assign choice before_b 1 (-99,5);
+sync before_a idle 1 (12,-13);
+sync before_b idle 1 (-13,-18);
+}
+process Agent graphinfo {
+trans before_b idle 1 (-42,-73);
+sync before_b idle 1 (-101,0);
+trans before_a idle 1 (51,-55);
+sync before_a idle 1 (69,13);
+trans choice before_b 1 (-60,77);
+guard choice before_b 1 (-119,59);
+trans choice before_a 1 (67,65);
+guard choice before_a 1 (0,43);
+trans idle choice 1 (-51,55);
+guard idle choice 1 (-93,-64);
+sync idle choice 1 (-68,-4);
+assign idle choice 1 (-25,-72);
+location idle (0,-272);
+locationName idle(-10,-30);
+location choice (0,127);
+locationName choice(-10,-30);
+location before_a (255,-42);
+locationName before_a(-10,-30);
+location before_b (-238,-59);
+locationName before_b(-10,-30);
+sync idle choice 2 (8,-17);
+assign idle choice 2 (0,4);
+guard choice before_a 2 (17,-67);
+assign choice before_a 2 (-17,-50);
+guard choice before_b 2 (10,-5);
+assign choice before_b 2 (-51,-26);
+sync before_a idle 2 (-8,-38);
+sync before_b idle 2 (-25,-13);
+}
+process Right graphinfo {
+location idle (68,-102);
+locationName idle(-10,-30);
+location choice (68,195);
+locationName choice(-10,-30);
+location before_a (221,42);
+locationName before_a(-10,-30);
+location before_b (-85,42);
+locationName before_b(-10,-30);
+sync idle choice 1 (8,22);
+guard choice before_a 1 (17,-16);
+guard choice before_b 1 (-119,-16);
+sync before_a idle 1 (26,-4);
+sync before_b idle 1 (-34,-4);
+}

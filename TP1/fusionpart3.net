@@ -1,0 +1,21 @@
+net g2part3
+tr Cl1_enter G2_Cl1_ack Cl1_wait2 -> Cl1_work 
+tr Cl1_exit Cl1_work -> Cl1_G1_release Cl1_G2_release Cl1_idle 
+tr Cl1_req1 Cl1_idle -> Cl1_G1_req Cl1_wait1 
+tr Cl1_req2 Cl1_wait1 G1_Cl1_ack -> Cl1_G2_req Cl1_wait2 
+tr Cl2_enter Cl2_wait2 G1_Cl2_ack -> Cl2_work 
+tr Cl2_exit Cl2_work -> Cl2_G1_release Cl2_G2_release Cl2_idle 
+tr Cl2_req1 Cl2_idle -> Cl2_G2_req Cl2_wait1 
+tr Cl2_req2 Cl2_wait1 G2_Cl2_ack -> Cl2_G1_req Cl2_wait2 
+tr G1_Cl1_back Cl1_G1_release G1_Cl1_Busy -> G1_idle 
+tr G1_Cl1_give Cl1_G1_req G1_idle -> G1_Cl1_ack G1_Cl1_Busy 
+tr G1_Cl2_back Cl2_G1_release G1_Cl2_Busy -> G1_idle 
+tr G1_Cl2_give Cl2_G1_req G1_idle -> G1_Cl2_ack G1_Cl2_Busy 
+tr G2_Cl1_back Cl1_G2_release G2_Cl1_Busy -> G2_idle 
+tr G2_Cl1_give Cl1_G2_req G2_idle -> G2_Cl1_ack G2_Cl1_Busy 
+tr G2_Cl2_back Cl2_G2_release G2_Cl2_Busy -> G2_idle 
+tr G2_Cl2_give Cl2_G2_req G2_idle -> G2_Cl2_ack G2_Cl2_Busy 
+pl Cl1_idle (1)
+pl Cl2_idle (1)
+pl G1_idle (1)
+pl G2_idle (1)

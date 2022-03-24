@@ -1,0 +1,99 @@
+t 505.0 245.0 1_exit 0 w n
+t 565.0 475.0 2_exit 0 w n
+t 375.0 745.0 3_ask 0 w n
+t 585.0 355.0 2_entry 0 w n
+t 465.0 550.0 3_entry 0 w n
+t 280.0 425.0 4_entry 0 w n
+t 385.0 235.0 1_entry 0 w n
+p 445.0 210.0 token_1 1 w
+p 550.0 305.0 after_1 0 w
+p 595.0 420.0 token_2 0 w
+p 520.0 515.0 after_2 0 w
+p 330.0 270.0 after_4 0 w
+t 40.0 375.0 4_ask 0 w n
+t 170.0 235.0 4_rel 0 w n
+p 80.0 260.0 idle_4 1 w
+p 90.0 415.0 wait_4 0 w
+p 150.0 315.0 cs_4 0 w
+t 170.0 415.0 4_work 0 w n
+p 600.0 80.0 idle_1 1 w
+t 475.0 25.0 1_ask 0 w n
+p 395.0 70.0 wait_1 0 w
+t 970.0 425.0 2_ask 0 w n
+p 835.0 565.0 idle_2 1 w
+t 765.0 325.0 2_work 0 w n
+p 955.0 355.0 wait_2 0 w
+t 730.0 600.0 2_rel 0 w n
+p 470.0 730.0 wait_3 0 w
+t 455.0 635.0 3_work 0 w n
+p 295.0 740.0 idle_3 1 w
+t 235.0 630.0 3_rel 0 w n
+p 280.0 515.0 after_3 0 w
+p 385.0 520.0 token_3 0 w
+t 345.0 585.0 3_exit 0 w n
+t 255.0 305.0 4_exit 0 w n
+p 280.0 370.0 token_4 0 w
+p 515.0 130.0 cs_1 0 w
+t 425.0 135.0 1_work 0 w n
+p 390.0 675.0 cs_3 0 w
+t 580.0 155.0 1_rel 0 w n
+p 865.0 465.0 cs_2 0 w
+p 730.0 460.0 wait2barre 1 n
+e wait2barre 2_exit 1 n
+e 2_work wait2barre 1 n
+e wait2barre 2_ask 1 n
+e 1_entry token_1 1 n
+e after_4 1_entry 1 n
+e 4_entry token_4 1 n
+e after_3 4_entry 1 n
+e 3_entry token_3 1 n
+e after_2 3_entry 1 n
+e 2_entry token_2 1 n
+e after_1 2_entry 1 n
+e 4_exit after_4 1 n
+e token_4 4_exit 1 n
+e 4_rel idle_4 1 n
+e cs_4 4_rel 1 n
+e 4_work cs_4 1 n
+e wait_4 4_work 1 n
+e token_4 4_work 1 n
+e 4_ask wait_4 1 n
+e idle_4 4_ask 1 n
+e 3_exit after_3 1 n
+e token_3 3_exit 1 n
+e 3_rel idle_3 1 n
+e cs_3 3_rel 1 n
+e 3_work cs_3 1 n
+e wait_3 3_work 1 n
+e token_3 3_work 1 n
+e 3_ask wait_3 1 n
+e idle_3 3_ask 1 n
+e 2_exit after_2 1 n
+e token_2 2_exit 1 n
+e 2_rel idle_2 1 n
+e cs_2 2_rel 1 n
+e 2_work cs_2 1 n
+e wait_2 2_work 1 n
+e token_2 2_work 1 n
+e 2_ask wait_2 1 n
+e idle_2 2_ask 1 n
+e 1_exit after_1 1 n
+e token_1 1_exit 1 n
+e 1_rel idle_1 1 n
+e cs_1 1_rel 1 n
+e 1_work cs_1 1 n
+e wait_1 1_work 1 n
+e token_1 1_work 1 n
+e 1_ask wait_1 1 n
+e idle_1 1_ask 1 n
+e 4_rel after_4 1 n
+e 1_rel after_1 1 n
+e 2_rel after_2 1 n
+e 3_rel after_3 1 n
+e wait_4 4_exit ?-1 n
+e 1_work 1_exit 1 n
+e 3_exit idle_3 1 n
+e idle_3 3_exit 1 n
+h tk4
+
+

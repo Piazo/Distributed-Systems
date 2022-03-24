@@ -1,0 +1,59 @@
+/* Probleme du choix distant */ 
+
+
+chan s, a, b, f;
+
+process Left() {
+
+state
+    idle,
+    choice,
+    after_a,
+    after_b,
+    reinit;
+urgent
+    idle,
+    choice,
+    after_a,
+    after_b,
+    reinit;
+init
+    idle;
+trans
+    idle -> choice { sync s!; },
+    choice -> after_a { sync a!; },
+    choice -> after_b { sync b?; },
+    after_a -> reinit { },
+    after_b -> reinit { },
+    reinit -> idle { sync f?; };
+}
+
+process Right() {
+
+state
+    idle,
+    choice,
+    after_a,
+    after_b,
+    reinit;
+urgent
+    idle,
+    choice,
+    after_a,
+    after_b,
+    reinit;
+init
+    idle;
+trans
+    idle -> choice { sync s?; },
+    choice -> after_a { sync a?; },
+    choice -> after_b { sync b!; },
+    after_a -> reinit { },
+    after_b -> reinit { },
+    reinit -> idle { sync f!; };
+}
+
+
+gauche := Left();
+droit :=  Right();
+system gauche, droit;

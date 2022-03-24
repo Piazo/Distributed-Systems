@@ -1,0 +1,28 @@
+process site graphinfo {
+location idle (17,76);
+locationName idle(-10,-30);
+location apres_envoi (187,-25);
+locationName apres_envoi(-10,-30);
+location apres_recoit (17,238);
+locationName apres_recoit(-42,17);
+sync idle apres_envoi 1 (-47,40);
+assign idle apres_envoi 1 (-47,55);
+sync idle apres_recoit 1 (38,-17);
+assign idle apres_recoit 1 (38,-2);
+}
+process fifo graphinfo {
+location service (68,42);
+locationName service(17,-8);
+location erreur (246,-119);
+locationName erreur(-10,-30);
+trans service service 1 (-30,-30);
+trans service service 1 (30,-30);
+guard service service 1 (-43,-59);
+sync service service 1 (-60,-25);
+assign service service 1 (-153,-101);
+trans service service 2 (-26,230);
+trans service service 2 (34,230);
+guard service service 2 (-22,184);
+sync service service 2 (-56,245);
+assign service service 2 (-64,286);
+}

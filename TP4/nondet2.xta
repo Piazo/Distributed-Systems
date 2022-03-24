@@ -1,0 +1,83 @@
+/* Probleme du choix distant: Choix interne  */ 
+
+
+chan s, a, b ;
+int bernard;
+
+process Left() {
+
+state
+    idle,
+    choice,
+    before_a,
+    before_b;
+urgent
+    idle,
+    choice,
+    before_a,
+    before_b;
+init
+    idle;
+trans
+    idle -> choice { sync s!; assign bernard := 0; },
+    choice -> before_a { assign bernard := 2; },
+    choice -> before_b { assign bernard := 1; },
+    before_a -> idle { sync a!; },
+    before_b -> idle { sync b?; };
+}
+
+process Agent(bool maitre) {
+
+state
+    idle,
+    choice,
+    before_a,
+    before_b;
+urgent
+    idle,
+    choice,
+    before_a,
+    before_b;
+init
+    idle;
+trans
+    before_b -> idle { sync b!; },
+    before_a -> idle { sync a?; },
+    choice -> before_b { guard !maitre && bernard == 1; },
+    choice -> before_a { guard !maitre && bernard == 2; },
+    idle -> choice { guard !maitre; sync s?; assign maitre := !maitre; },
+    idle -> choice { sync s!; assign bernard := 0, maitre := !maitre; },
+    choice -> before_a { guard maitre; assign bernard := 2; },
+    choice -> before_b { guard maitre; assign bernard := 1; },
+    before_a -> idle { sync a!; },
+    before_b -> idle { sync b?; };
+}
+
+process Right() {
+
+state
+    idle,
+    choice,
+    before_a,
+    before_b;
+urgent
+    idle,
+    choice,
+    before_a,
+    before_b;
+init
+    idle;
+trans
+    idle -> choice { sync s?; },
+    choice -> before_a { guard bernard == 2; },
+    choice -> before_b { guard bernard == 1; },
+    before_a -> idle { sync a?; },
+    before_b -> idle { sync b!; };
+}
+
+gauche := Agent(true);
+droit :=  Agent(false);
+
+
+
+system gauche, droit;

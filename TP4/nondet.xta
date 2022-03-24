@@ -1,0 +1,63 @@
+/* Probleme du choix distant: Choix interne  */ 
+
+
+chan s, a, b, f;
+
+process Left() {
+
+state
+    idle,
+    choice,
+    before_a,
+    before_b,
+    after_a,
+    after_b;
+urgent
+    idle,
+    choice,
+    before_a,
+    before_b,
+    after_a,
+    after_b;
+init
+    idle;
+trans
+    idle -> choice { sync s!; },
+    choice -> before_a { },
+    choice -> before_b { },
+    before_a -> after_a { sync a!; },
+    before_b -> after_b { sync b?; },
+    after_b -> idle { sync f?; },
+    after_a -> idle { sync f?; };
+}
+
+process Right() {
+
+state
+    idle,
+    choice,
+    before_a,
+    before_b,
+    after_a,
+    after_b;
+urgent
+    idle,
+    choice,
+    before_a,
+    before_b,
+    after_a,
+    after_b;
+init
+    idle;
+trans
+    idle -> choice { sync s?; },
+    choice -> before_a { },
+    choice -> before_b { },
+    before_a -> after_a { sync a?; },
+    before_b -> after_b { sync b!; },
+    after_a -> idle { sync f!; },
+    after_b -> idle { sync f!; };
+}
+
+gauche := Left();
+droit :=  Right();system gauche, droit;

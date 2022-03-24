@@ -1,0 +1,86 @@
+chan LRGET, LRPUT;
+int  LRVG,  LRVP;
+
+chan RLGET, RLPUT;
+int  RLVG,  RLVP;
+
+chan cvg, cvd; // canaux synchrones entre site et voteur
+
+process fifo(const int flux, const int cap,  chan & get, chan &put, int &vget, int &vput){
+        int cpt := 0;
+        int buf[cap];
+        int ixP := 0;
+        int ixG := 0;
+        int cdf := flux;
+
+        state service, erreur;
+        urgent service, erreur;
+        init service;
+        trans
+
+        service -> service{
+                guard cpt > 0;
+                sync get!;
+                assign vget:= buf[ixG], 
+                cpt:= cpt - 1, ixG:= (ixG == (cap - 1))?0:(ixG + 1);
+        },
+        service -> service{
+                guard cpt < cap;
+                sync put?;
+                assign buf[ixP]:= vput, cpt:= cpt + 1, 
+                ixP:= (ixP == (cap - 1))?0:(ixP + 1);
+        },
+        service -> erreur{
+        guard cpt == cap and cdf == 0; sync put?; };
+
+}
+
+
+
+process player(chan &choice, const int gain1, const int gain2,   chan &in, chan &out,  int &vin, int &vout){
+
+/* A Completer */
+
+state  repos,idle ; 
+urgent repos,idle ; 
+init repos;
+trans 
+  repos -> idle{sync choice?;};
+  
+}
+
+
+
+process site(chan &choice, chan &in, chan &out,  int &vin, int &vout){
+
+/* A Completer */
+
+int mesg; 
+state  idle, wait, envoi, apres_envoi, recoit, apres_recoit;
+urgent idle, wait,  envoi, apres_envoi, recoit, apres_recoit;
+init idle;
+trans  
+idle  -> wait{sync choice!;},
+wait -> envoi{sync choice?;},
+wait -> recoit{sync choice?;},
+envoi  -> apres_envoi{sync out!; assign vout := 5;},
+recoit -> apres_recoit{sync in?; assign mesg := vin;},
+apres_envoi -> idle{},
+apres_recoit -> idle{};
+}
+
+
+FifoLR  := fifo(0,4,LRGET,LRPUT,LRVG,LRVP);
+FifoRL  := fifo(0,4,RLGET,RLPUT,RLVG,RLVP);
+
+gauche := site(cvg,RLGET,LRPUT,RLVG,LRVP);
+droit :=  site(cvd,LRGET,RLPUT,LRVG,RLVP);
+
+
+Voteurgauche := player(cvg, 1,1,RLGET,LRPUT,RLVG,LRVP);
+Voteurdroit :=  player(cvd, 0,2,LRGET,RLPUT,LRVG,RLVP);
+
+system Voteurgauche, gauche, FifoLR, FifoRL, droit, Voteurdroit;
+
+
+

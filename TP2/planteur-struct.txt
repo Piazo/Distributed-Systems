@@ -1,0 +1,39 @@
+Struct version 3.6.0 -- 07/06/20 -- LAAS/CNRS
+
+parsed net planteur
+
+5 places, 5 transitions, 14 arcs
+
+net planteur
+tr cueille Bananier champ  -> banane champ 
+tr dort jardin  -> champ 
+tr leve table  -> jardin 
+tr mange banane table  -> Bananier table 
+tr rentre champ  -> table 
+pl Bananier (20)
+pl champ (1)
+
+0.000s
+
+P-SEMI-FLOWS GENERATING SET ------------------------------------- 
+
+invariant
+
+Bananier banane (20)
+champ jardin table (1)
+
+0.000s
+
+T-SEMI-FLOWS GENERATING SET ------------------------------------- 
+
+consistent
+
+cueille mange
+dort leve rentre
+
+0.000s
+
+ANALYSIS COMPLETED  --------------------------------------------- 
+
+
+

@@ -1,0 +1,22 @@
+
+## Les places  Cl1_G1_req, Cl1_G1_release, G1_Cl1_ack
+## correspondent a des messages éeangésentre le client Cl1 
+## et le gestionnaire G1.
+## Leur nom est sous la forme Emetteur_Destinataire_Message.
+
+## Cl1_G1_req, Cl1_G1_release sont eis par Cl1 et recus par G1
+## G1_Cl1_ack est eis par G1 ertrecu par Cl1.
+## Ces places seront partagee aentre le client1 et e gestionnnaire G1.
+
+## Idem entre Cl1 et G2 pour les places suivantes :
+## Cl1_G2_req, Cl1_G2_release, G2_Cl1_ack
+
+# Le comportement du client1 est fourni et ne doit pas etre modifie.
+
+pl Cl1_idle (1) 
+
+tr Cl1_req1 Cl1_idle -> Cl1_wait1 Cl1_G1_req
+tr Cl1_req2 Cl1_wait1 G1_Cl1_ack -> Cl1_wait2 Cl1_G2_req
+tr Cl1_enter Cl1_wait2 G2_Cl1_ack -> Cl1_work
+tr Cl1_exit Cl1_work -> Cl1_G1_release Cl1_G2_release Cl1_idle
+

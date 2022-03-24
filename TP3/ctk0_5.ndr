@@ -1,0 +1,67 @@
+t 530.0 795.0 4_ask 0 w n
+t 40.0 605.0 5_ask 0 w n
+p 145.0 50.0 idle_1 1 n
+p 910.0 480.0 cs_3 0 n
+t 635.0 135.0 2_work 0 w n
+t 780.0 85.0 2_ask 0 w n
+p 755.0 185.0 idle_2 1 n
+t 695.0 185.0 2_rel 0 w n
+p 690.0 80.0 wait_2 0 n
+p 705.0 135.0 cs_2 0 n
+p 430.0 790.0 wait_4 0 n
+t 455.0 680.0 4_work 0 w n
+t 545.0 675.0 4_rel 0 w n
+p 575.0 745.0 idle_4 1 n
+t 145.0 190.0 1_work 0 w n
+t 80.0 40.0 1_ask 0 w n
+p 95.0 555.0 cs_5 0 n
+p 40.0 525.0 idle_5 1 n
+p 105.0 635.0 wait_5 0 n
+t 135.0 505.0 5_rel 0 w n
+t 165.0 590.0 5_work 0 w n
+p 1005.0 415.0 wait_3 0 n
+t 1050.0 530.0 3_ask 0 w n
+p 945.0 610.0 idle_3 1 n
+p 500.0 745.0 cs_4 0 n
+p 30.0 120.0 wait_1 0 n
+p 125.0 115.0 cs_1 0 n
+t 235.0 115.0 1_rel 0 w n
+t 840.0 605.0 3_rel 0 w n
+t 900.0 345.0 3_work 0 w n
+p 520.0 470.0 nbFork 5 n
+t 360.0 365.0 req 0 w n
+t 480.0 375.0 ack 0 w n
+t 625.0 370.0 release 0 w n
+e 5_rel idle_5 1 n
+e cs_5 5_rel 1 n
+e 5_work cs_5 1 n
+e wait_5 5_work 1 n
+e 5_ask wait_5 1 n
+e idle_5 5_ask 1 n
+e 4_rel idle_4 1 n
+e cs_4 4_rel 1 n
+e 4_work cs_4 1 n
+e wait_4 4_work 1 n
+e 4_ask wait_4 1 n
+e idle_4 4_ask 1 n
+e 3_rel idle_3 1 n
+e cs_3 3_rel 1 n
+e 3_work cs_3 1 n
+e wait_3 3_work 1 n
+e 3_ask wait_3 1 n
+e idle_3 3_ask 1 n
+e 2_rel idle_2 1 n
+e cs_2 2_rel 1 n
+e 2_work cs_2 1 n
+e wait_2 2_work 1 n
+e 2_ask wait_2 1 n
+e idle_2 2_ask 1 n
+e 1_rel idle_1 1 n
+e cs_1 1_rel 1 n
+e 1_work cs_1 1 n
+e wait_1 1_work 1 n
+e 1_ask wait_1 1 n
+e idle_1 1_ask 1 n
+h ctk0_5
+
+

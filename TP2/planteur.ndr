@@ -1,0 +1,38 @@
+t 280.0 145.0 rentre 0 w n
+p 315.0 70.0 table 0 n
+p 480.0 225.0 Bananier 20 n
+t 75.0 25.0 leve 0 w n
+p 30.0 95.0 jardin 0 n
+t 45.0 220.0 dort 0 w n
+t 495.0 80.0 mange 0 w n
+p 315.0 215.0 champ 1 n
+p 240.0 425.0 Energie 11 n
+t 210.0 220.0 AllerAuChamp 0 w n
+p 390.0 135.0 banane 0 n
+t 420.0 270.0 cueille 0 w n
+p 110.0 225.0 maison 0 n
+e champ rentre 1 n
+e rentre table 1 n
+e table leve 1 n
+e leve jardin 1 n
+e jardin dort 1 n
+e champ cueille 1 n
+e cueille banane 1 n
+e cueille champ 1 n
+e banane mange 1 n
+e table mange 1 n
+e mange table 1 n
+e Bananier cueille 1 n
+e mange Bananier 1 n
+e dort Energie 9 n
+e Energie rentre 5 n
+e Energie cueille 1 n
+e mange Energie 2 n
+e Energie leve 1 n
+e dort maison 1 n
+e maison AllerAuChamp 1 n
+e AllerAuChamp champ 1 n
+e Energie AllerAuChamp 9 n
+h planteur
+
+

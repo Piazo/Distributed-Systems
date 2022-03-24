@@ -1,0 +1,26 @@
+net {tokenring 3}
+pl token_1(1)
+pl idle_1(1)
+pl idle_2(1)
+pl idle_3(1)
+tr 1_ask idle_1 -> wait_1
+tr 1_work wait_1 -> cs_1
+tr 1_rel cs_1 -> idle_1
+tr 1_work  token_1 -> 
+tr 1_rel  -> token_1
+tr 1_exit  token_1 ->  after_1
+tr 2_ask idle_2 -> wait_2
+tr 2_work wait_2 -> cs_2
+tr 2_rel cs_2 -> idle_2
+tr 2_work  token_2 -> 
+tr 2_rel  -> token_2
+tr 2_exit  token_2 ->  after_2
+tr 3_ask idle_3 -> wait_3
+tr 3_work wait_3 -> cs_3
+tr 3_rel cs_3 -> idle_3
+tr 3_work  token_3 -> 
+tr 3_rel  -> token_3
+tr 3_exit  token_3 ->  after_3
+tr 2_entry after_1 -> token_2
+tr 3_entry after_2 -> token_3
+tr 1_entry after_3 -> token_1

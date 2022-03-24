@@ -1,0 +1,23 @@
+p 45.0 165.0 G2_Cl1_ack 0 n
+p 335.0 175.0 Cl1_G2_release 0 n
+p 50.0 55.0 Cl1_G2_req 0 n
+t 130.0 80.0 G2_Cl1_give 0 w n
+t 245.0 175.0 G2_Cl1_back s 0 w n {} ne
+p 140.0 175.0 G2_Busy 0 n
+p 215.0 55.0 G2_idle 1 n
+t 445.0 180.0 Cl1_exit 0 w n
+t 115.0 25.0 Cl1_req2 0 w n
+t 45.0 255.0 Cl1_enter 0 w n
+e G2_Cl1_ack Cl1_enter 1 n
+e Cl1_req2 Cl1_G2_req 1 n
+e Cl1_exit Cl1_G2_release 1 n
+e G2_Busy G2_Cl1_back 1 n
+e G2_Cl1_back G2_idle 1 n
+e Cl1_G2_release G2_Cl1_back 1 n
+e G2_Cl1_give G2_Busy 1 n
+e G2_Cl1_give G2_Cl1_ack 1 n
+e G2_idle G2_Cl1_give 1 n
+e Cl1_G2_req G2_Cl1_give 1 n
+h g2part2
+
+
