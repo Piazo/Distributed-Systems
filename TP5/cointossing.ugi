@@ -1,0 +1,70 @@
+process fifo graphinfo {
+location service (40,80);
+locationName service(-65,-4);
+location erreur (190,80);
+locationName erreur(-10,-30);
+trans service service 1 (-48,-216);
+trans service service 1 (70,-216);
+guard service service 1 (-15,-207);
+sync service service 1 (-6,-182);
+assign service service 1 (-159,-258);
+trans service service 2 (-40,132);
+trans service service 2 (2,132);
+guard service service 2 (-57,141);
+sync service service 2 (11,115);
+assign service service 2 (-150,158);
+guard service erreur 1 (4,22);
+sync service erreur 1 (4,-21);
+}
+process player graphinfo {
+trans L3 repos 1 (-177,58);
+sync L3 repos 1 (-159,41);
+trans L2 repos 1 (-160,-61);
+sync L2 repos 1 (-142,-78);
+guard L1 L3 1 (60,34);
+assign L1 L3 1 (30,4);
+guard L1 L2 1 (4,20);
+assign L1 L2 1 (4,-5);
+sync L0 L1 1 (-43,-34);
+assign L0 L1 1 (-60,8);
+trans idle L0 1 (-2,88);
+sync idle L0 1 (-49,26);
+assign idle L0 1 (-49,43);
+trans idle L0 2 (6,-116);
+sync idle L0 2 (-49,-76);
+assign idle L0 2 (-49,-59);
+location repos (-419,46);
+locationName repos(-10,-30);
+location idle (-269,46);
+locationName idle(-10,-30);
+sync repos idle 1 (-30,-21);
+location L0 (-136,51);
+location L1 (17,51);
+location L2 (93,-76);
+location L3 (76,161);
+}
+process site graphinfo {
+location idle (40,80);
+locationName idle(-10,-30);
+location wait (190,80);
+locationName wait(-10,-30);
+location envoi (190,230);
+locationName envoi(-10,-30);
+location apres_envoi (40,230);
+locationName apres_envoi(-10,-30);
+location recoit (340,80);
+locationName recoit(-10,-30);
+location apres_recoit (340,230);
+locationName apres_recoit(-10,-30);
+sync idle wait 1 (-60,-15);
+guard wait envoi 1 (-54,-45);
+sync wait envoi 1 (-71,-11);
+guard wait recoit 1 (-44,-46);
+sync wait recoit 1 (-53,-21);
+sync envoi apres_envoi 1 (-60,-15);
+assign envoi apres_envoi 1 (-60,0);
+sync recoit apres_recoit 1 (-60,-15);
+assign recoit apres_recoit 1 (-60,0);
+sync apres_envoi idle 1 (0,-17);
+sync apres_recoit idle 1 (65,49);
+}

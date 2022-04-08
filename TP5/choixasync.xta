@@ -1,5 +1,7 @@
 /* Probleme du choix distant en asynchrone avec controle de flux */ 
 
+const int ACK = 3;
+const int MESG = 5;
 
 chan LRGET, LRPUT;
 int  LRVG,  LRVP;
@@ -13,7 +15,10 @@ int mesg;
 state
     idle,
     apres_envoi,
-    apres_recoit;
+    apres_recoit,
+    L0,
+    Error,
+    L1;
 urgent
     idle,
     apres_envoi,
@@ -21,13 +26,17 @@ urgent
 init
     idle;
 trans
-    idle -> apres_envoi { sync out!; assign vout := 5; },
+    L1 -> apres_envoi { sync out!; assign vout:= ACK; },
+    L0 -> L1 { guard mesg == MESG; },
+    apres_recoit -> Error { guard mesg == ACK; },
+    L0 -> idle { guard mesg == ACK; },
+    apres_envoi -> L0 { sync in?; assign mesg := vin; },
+    idle -> apres_envoi { sync out!; assign vout := MESG; },
     idle -> apres_recoit { sync in?; assign mesg := vin; },
-    apres_envoi -> idle { },
-    apres_recoit -> idle { };
+    apres_recoit -> idle { sync out!; assign vout := ACK; };
 }
 
-process fifo(const int cap, chan &get, chan &put,  int &vget,  int &vput) {
+process fifo(const int cap, chan &get, chan &put,  int &vget,  int &vput, int control) {
 
         int cpt := 0;
         int buf[cap];
@@ -42,6 +51,7 @@ urgent
 init
     service;
 trans
+    service -> erreur { guard cpt == cap && control == 1; sync put?; },
     service -> service { guard cpt > 0; sync get!; assign vget:= buf[ixG], 
                 cpt:= cpt - 1, ixG:= (ixG == (cap - 1))?0:(ixG + 1); },
     service -> service { guard cpt < cap; sync put?; assign buf[ixP]:= vput, cpt:= cpt + 1, 
@@ -52,8 +62,8 @@ trans
 
 
 
-FifoLR  := fifo(4,LRGET,LRPUT,LRVG,LRVP);
-FifoRL  := fifo(4,RLGET,RLPUT,RLVG,RLVP);
+FifoLR  := fifo(4,LRGET,LRPUT,LRVG,LRVP, 1);
+FifoRL  := fifo(4,RLGET,RLPUT,RLVG,RLVP, 1);
 
 gauche := site(RLGET,LRPUT,RLVG,LRVP);
 droit :=  site(LRGET,RLPUT,LRVG,RLVP);

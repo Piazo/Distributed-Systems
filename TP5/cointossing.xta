@@ -1,86 +1,105 @@
+
 chan LRGET, LRPUT;
 int  LRVG,  LRVP;
 
 chan RLGET, RLPUT;
 int  RLVG,  RLVP;
 
-chan cvg, cvd; // canaux synchrones entre site et voteur
+chan cvg, cvd;
 
-process fifo(const int flux, const int cap,  chan & get, chan &put, int &vget, int &vput){
+int vchoiceg, vchoiced;
+
+process fifo(const int flux, const int cap,  chan & get, chan &put, int &vget, int &vput) {
+
         int cpt := 0;
         int buf[cap];
         int ixP := 0;
         int ixG := 0;
         int cdf := flux;
-
-        state service, erreur;
-        urgent service, erreur;
-        init service;
-        trans
-
-        service -> service{
-                guard cpt > 0;
-                sync get!;
-                assign vget:= buf[ixG], 
-                cpt:= cpt - 1, ixG:= (ixG == (cap - 1))?0:(ixG + 1);
-        },
-        service -> service{
-                guard cpt < cap;
-                sync put?;
-                assign buf[ixP]:= vput, cpt:= cpt + 1, 
-                ixP:= (ixP == (cap - 1))?0:(ixP + 1);
-        },
-        service -> erreur{
-        guard cpt == cap and cdf == 0; sync put?; };
-
+state
+    service,
+    erreur;
+urgent
+    service,
+    erreur;
+init
+    service;
+trans
+    service -> service { guard cpt > 0; sync get!; assign vget:= buf[ixG], 
+                cpt:= cpt - 1, ixG:= (ixG == (cap - 1))?0:(ixG + 1); },
+    service -> service { guard cpt < cap; sync put?; assign buf[ixP]:= vput, cpt:= cpt + 1, 
+                ixP:= (ixP == (cap - 1))?0:(ixP + 1); },
+    service -> erreur { guard cpt == cap and cdf == 0; sync put?; };
 }
 
+process player(chan &choice, const int gain1, const int gain2,   chan &in, chan &out,  int &vin, int &vout, int &vchoice) {
+int choix_adv;
+int choix;
+state
+    repos,
+    idle,
+    L0,
+    L1,
+    L2,
+    L3;
+urgent
+    repos,
+    idle;
+init
+    repos;
+trans
+    L3 -> repos { sync choice!; },
+    L2 -> repos { sync choice!; },
+    L1 -> L3 { guard !((choix + choix_adv == gain1) || (choix + choix_adv == gain2)); assign vchoice != 1;; },
+    L1 -> L2 { guard (choix + choix_adv == gain1) || (choix + choix_adv == gain2); assign vchoice := 2; },
+    L0 -> L1 { sync in?; assign choix_adv := vin; },
+    idle -> L0 { sync out!; assign vout := 0, choix := 0; },
+    idle -> L0 { sync out!; assign vout := 1, choix :=1; },
+    repos -> idle { sync choice?; };
+}
 
+process site(chan &choice, chan &in, chan &out,  int &vin, int &vout, int &vchoice) {
 
-process player(chan &choice, const int gain1, const int gain2,   chan &in, chan &out,  int &vin, int &vout){
 
 /* A Completer */
 
-state  repos,idle ; 
-urgent repos,idle ; 
-init repos;
-trans 
-  repos -> idle{sync choice?;};
-  
+int mesg;
+state
+    idle,
+    wait,
+    envoi,
+    apres_envoi,
+    recoit,
+    apres_recoit;
+urgent
+    idle,
+    wait,
+    envoi,
+    apres_envoi,
+    recoit,
+    apres_recoit;
+init
+    idle;
+trans
+    idle -> wait { sync choice!; },
+    wait -> envoi { guard vchoice == 2; sync choice?; },
+    wait -> recoit { guard vchoice == 1; sync choice?; },
+    envoi -> apres_envoi { sync out!; assign vout := 5; },
+    recoit -> apres_recoit { sync in?; assign mesg := vin; },
+    apres_envoi -> idle { sync in?; },
+    apres_recoit -> idle { sync out!; };
 }
 
-
-
-process site(chan &choice, chan &in, chan &out,  int &vin, int &vout){
-
-/* A Completer */
-
-int mesg; 
-state  idle, wait, envoi, apres_envoi, recoit, apres_recoit;
-urgent idle, wait,  envoi, apres_envoi, recoit, apres_recoit;
-init idle;
-trans  
-idle  -> wait{sync choice!;},
-wait -> envoi{sync choice?;},
-wait -> recoit{sync choice?;},
-envoi  -> apres_envoi{sync out!; assign vout := 5;},
-recoit -> apres_recoit{sync in?; assign mesg := vin;},
-apres_envoi -> idle{},
-apres_recoit -> idle{};
-}
 
 
 FifoLR  := fifo(0,4,LRGET,LRPUT,LRVG,LRVP);
 FifoRL  := fifo(0,4,RLGET,RLPUT,RLVG,RLVP);
 
-gauche := site(cvg,RLGET,LRPUT,RLVG,LRVP);
-droit :=  site(cvd,LRGET,RLPUT,LRVG,RLVP);
+gauche := site(cvg,RLGET,LRPUT,RLVG,LRVP, vchoiceg);
+droit :=  site(cvd,LRGET,RLPUT,LRVG,RLVP, vchoiced);
 
 
-Voteurgauche := player(cvg, 1,1,RLGET,LRPUT,RLVG,LRVP);
-Voteurdroit :=  player(cvd, 0,2,LRGET,RLPUT,LRVG,RLVP);
+Voteurgauche := player(cvg, 1,1,RLGET,LRPUT,RLVG,LRVP,vchoiceg);
+Voteurdroit :=  player(cvd, 0,2,LRGET,RLPUT,LRVG,RLVP,vchoiced);
 
 system Voteurgauche, gauche, FifoLR, FifoRL, droit, Voteurdroit;
-
-
-
